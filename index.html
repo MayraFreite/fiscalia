@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Control de detenidos</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" type="text/css" href="vistas/styles.css">
+  </head>
+
+  <body>
+    <br><br><br><br>
+    <center><img src= "vistas/Imagenes/Fiscalia.png" style=" width: 600px; height: 175px"></center>
+    <div>
+    <br><br><br><br><br><br><br>
+       <center><b><FONT FACE = "Arial" SIZE = 5 COLOR = "black"><label for="">Usuario:</label></FONT></b> 
+       <input
+        type="text"
+        placeholder="Ingresa tu usuario"
+        id="usuario"></center>
+    <br><br>    
+       <center><b><FONT FACE = "Arial" SIZE = 5 COLOR = "black"><label for="">Contraseña:</label></FONT></b> 
+       <input
+        type="password"
+        placeholder="Ingresa tu contrasena"
+        id="contrasena">
+        <span id="error"></span>
+        </center>
+    </div>
+    <div>
+      <br><br>
+        <center><button onclick="cargarRegistroUsuario()">Registrarse</button>
+        <button onclick="login()">Ingresar</button></center>
+    </div>
+       
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script>
+        const authControlador = require('./controladores/usuarios.js');
+
+        async function login () {
+            const usuario = $('#usuario').val();
+            const contrasena = $('#contrasena').val();   
+            const respuesta = await authControlador.autenticar(usuario, contrasena);
+
+            if (respuesta.status === 'Error') {
+                $('#error').html(respuesta.message);
+            } else {
+                localStorage.setItem('userId', usuario);
+                window.location = './vistas/home.html';
+            }
+        }
+
+        function cargarRegistroUsuario () {
+            window.location = './vistas/usuarios/registro.html';
+        }
+    </script>
+  </body>
+</html>

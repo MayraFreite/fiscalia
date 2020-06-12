@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="../styles.css">   
+    </head>
+
+    <body>
+    	<div class="header">
+            <a href="javascript: history.go(-1)">
+                <img src="../Imagenes/Volver.png" class="back">
+            </a>
+            <img src="../Imagenes/Fiscalia.png" class="logo">
+        </div>
+    <br>	
+    <br>
+        <center><h1><FONT FACE = "Copperplate" SIZE = 10 COLOR = "black">Eliminar Detenido</FONT></h1></center> 
+    <br><br><br>     
+        <center><img src="../Imagenes/Eliminar.png" align="center" height="65" width="65" alt="Ingresar.png"></center>
+    
+    <br><br><br>
+        <center><b><FONT FACE = "Arial" SIZE = 5 COLOR = "black"><label for="">Cédula del Detenido:</label></FONT></b> 
+         <input 
+         class="form-control-file" type="text" tsize = "20" maxlength="11" 
+         placeholder="Ingrese la cedula"
+         id="cedula"></center>
+    <br> <br> <br> 
+    
+        <center><button onclick="eliminarDetenido()">Eliminar</button>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script>
+        const detenidosControlador = require('../../controladores/detenidos.js');
+
+        async function eliminarDetenido () {
+                const cedula = $('#cedula').val();
+                const userId = localStorage.getItem('userId');
+                const respuesta = await detenidosControlador.registrarSalida(cedula, userId);
+                if (respuesta.status === 'Error') {
+                    $('#error').html(respuesta.message);
+                } else {
+                    window.location = './index.html';
+                }
+          }
+    </script>
+   </body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    
+     <head>
+          <link rel="stylesheet" type="text/css" href="../styles.css">
+          <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+      </head>
+
+    <body>
+     <div class="header">
+          <a href="javascript: history.go(-1)">
+              <img src="../Imagenes/Volver.png" class="back">
+          </a>
+          <img src="../Imagenes/Fiscalia.png" class="logo">
+      </div>
+    <br>	
+    <br>
+        <center><h1><FONT FACE = "Copperplate" SIZE = 10 COLOR = "black">Ingresar Detenido</FONT></h1></center> 
+    <br>    
+    <br> 
+        <center><img src="../Imagenes/Ingresar.png" align="center" height="65" width="65" alt="Ingresar.png"></center> 
+     <div class="form">
+          <div class="field">
+               <label for="">Cédula:</label>
+               <input 
+                    class="form-control-file" type="text" tsize = "50" maxlength="11" 
+                    placeholder="Ingrese número de cedula"
+                    id="cedula"
+               >
+               <button onclick="buscarDetenido()">
+                    <img class="icon" src="../Imagenes/search.svg" alt="Search">
+               </button>
+          </div>
+          <div id="estadoBusqueda"></div>
+          <div class="field">
+               <label for="">Nombre:</label>
+               <input 
+                    class="form-control-file" type="text" tsize = "20" maxlength="20" 
+                    placeholder="Ingrese el nombre"
+                    id="nombre"
+               >
+          </div>
+          <div class="field">
+               <label for="">Apellido:</label>
+               <input
+                    class="form-control-file" type="text" tsize = "20" maxlength="25" 
+                    placeholder="Ingrese el apellido"
+                    id="apellido"
+               >
+          </div>
+          <div class="field">
+               <label for="">Fecha de Nacimiento:</label>
+               <input
+                    class="form-control-file"
+                    type="text" tsize = "20" maxlength="15" 
+                    placeholder="Ingrese fecha de nacimiento"
+                    id="fechaNacimiento"
+               >
+          </div>
+          <div class="field">
+               <label for="">Celda (ID):</label>
+               <select id="celdas"></select>
+          </div>
+     </div>    
+     <div style="text-align: center;"><button onclick="registrarDetenido()">Ingresar</button></div>
+     <script>window.$ = window.jQuery = require('jquery');</script>
+     <script>
+          const detenidosControlador = require('../../controladores/detenidos.js');
+          const celdasControlador = require('../../controladores/celdas.js');
+
+          async function cargarListadoCeldas () {
+               const celdas = await celdasControlador.listar();
+               if (celdas.status === 'Error') {
+                    $('#error').html(respuesta.message);
+               } else {
+                    let opciones = '';
+                    let i = 0;
+                    while (i < celdas.length) {
+                         opciones += `<option value="${celdas[i].idCelda}">${celdas[i].idCelda}</option>`;
+                         i++;
+                    }
+                    $('#celdas').html(opciones);
+               }
+          }
+
+          async function buscarDetenido () {
+               $('#estadoBusqueda').html('');
+               const cedula = $('#cedula').val();
+
+               if (!cedula) return;
+
+               const respuesta = await detenidosControlador.buscarPorCedula(cedula);
+               if (respuesta && respuesta.status === 'Error') {
+                    $('#error').html(respuesta.message);
+               } else {
+                    if (!respuesta) {
+                         $('#estadoBusqueda').html('No se encontro un detenido con esta cedula');
+                    } else {
+                         $('#nombre').val(respuesta.nombreDetenido);
+                         $('#apellido').val(respuesta.apellidoDetenido);
+                         $('#fechaNacimiento').val(respuesta.fechaDeNacimiento);
+                    }
+               }
+          }
+
+          async function registrarDetenido () {
+               const cedula = $('#cedula').val();
+               const nombre = $('#nombre').val();
+               const apellido = $('#apellido').val();
+               const fechaNacimiento = $('#fechaNacimiento').val();
+               const celda = $('#celdas').children("option:selected").val();
+               const userId = localStorage.getItem('userId');
+
+               const respuesta = await detenidosControlador.registrarEntrada(
+                    cedula,
+                    nombre,
+                    apellido,
+                    fechaNacimiento,
+                    celda,
+                    parseInt(userId)
+               );
+               if (respuesta.status === 'Error') {
+                    $('#error').html(respuesta.message);
+               } else {
+                    window.location = './index.html';
+               }
+          }
+
+          cargarListadoCeldas();
+     </script>
+
+   </body>
+</html>
