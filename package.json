@@ -7,19 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/caroguerrerosilvera/fiscalia.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/caroguerrerosilvera/fiscalia/issues"
-  },
-  "homepage": "https://github.com/caroguerrerosilvera/fiscalia#readme",
-  "devDependencies": {
-    "electron": "^9.0.2"
-  },
+ 
   "dependencies": {
     "jquery": "^3.5.1",
     "mysql": "^2.18.1"
