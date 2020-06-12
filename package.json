@@ -7,6 +7,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
   },
+   "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MayraFreite/fiscalia.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MayraFreite/fiscalia/issues"
+  },
+  "homepage": "https://github.com/MayraFreite/fiscalia#readme",
+  "devDependencies": {
+    "electron": "^9.0.2"
+  },
  
   "dependencies": {
     "jquery": "^3.5.1",
